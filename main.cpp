@@ -3,7 +3,6 @@
 
 SDL_Window *window;
 SDL_Renderer* renderer;
-while
 
 int mouseX = 0, mouseY = 0;
 float shoulderX = 320;
