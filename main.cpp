@@ -37,7 +37,7 @@ void DrawCircle(int h, int k, float r, bool point = false) {
 
 int main(int argc, char const *argv[])
 {
-	window = SDL_CreateWindow("Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL);
+	window = SDL_CreateWindow("Inverse Kinematics", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL);
 	renderer = SDL_CreateRenderer(window, 0, SDL_RENDERER_ACCELERATED);
 
 	while (running) {
