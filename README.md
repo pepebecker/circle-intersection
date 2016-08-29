@@ -1,4 +1,4 @@
-# Circle Intersection
+# [Circle Intersection](http://pepebecker.com/circle-intersection/)
 
 The basics of inverse kinematics
 
