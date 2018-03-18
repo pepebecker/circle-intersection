@@ -2,17 +2,19 @@
 
 The basics of inverse kinematics
 
-## First install SDL2
+## Requires SDL2
 
 ```
 brew install sdl2
 ```
 
-## Running from Command Line
+## Usage
 
 ```
 make
 make run
 ```
 
-Supported Platforms: Mac OS X
+## Contributing
+
+If you **have a question**, **found a bug** or want to **propose a feature**, have a look at [the issues page](https://github.com/pepebecker/circle-intersection/issues).

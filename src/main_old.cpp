@@ -40,6 +40,8 @@ int main(int argc, char const *argv[])
 	window = SDL_CreateWindow("Inverse Kinematics", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL);
 	renderer = SDL_CreateRenderer(window, 0, SDL_RENDERER_ACCELERATED);
 
+	SDL_ShowCursor(SDL_DISABLE);
+
 	while (running) {
 		SDL_Event event;
 		while (SDL_PollEvent(&event)) {
@@ -65,7 +67,7 @@ int main(int argc, char const *argv[])
 
 		elbowX = handX - (pow(distanceX, 2) - pow(shoulderR, 2) + pow(handR, 2)) / (2 * distanceX);
 
-		elbowY = handY - -abs(sqrt( (-distanceX + shoulderR - handR) * (-distanceX - shoulderR + handR) * (-distanceX + shoulderR + handR) * (distanceX + shoulderR + handR) ) / (distanceX * 2));
+		elbowY = handY - -fabs(sqrt( (-distanceX + shoulderR - handR) * (-distanceX - shoulderR + handR) * (-distanceX + shoulderR + handR) * (distanceX + shoulderR + handR) ) / (distanceX * 2));
 
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 		SDL_RenderClear(renderer);
@@ -76,7 +78,7 @@ int main(int argc, char const *argv[])
 		SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
 		DrawCircle(handX, handY, handR, 1);
 
-		if (abs(handX - shoulderX) >= abs(shoulderR - handR)) {
+		if (fabs(handX - shoulderX) >= fabs(shoulderR - handR)) {
 			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 			DrawCircle(elbowX, elbowY, 1, 1);
 			SDL_RenderDrawLine(renderer, shoulderX, shoulderY, elbowX, elbowY);
