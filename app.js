@@ -6,15 +6,7 @@ export function print(ptr) {
   console.log(getString(ptr));
 }
 
-export function getRandom() {
-  return Math.random();
-}
-
-export function init() {
-  state.canvas = document.createElement('canvas');
-  document.body.appendChild(state.canvas);
-  state.ctx = state.canvas.getContext('2d');
-}
+export function init() { }
 
 let lastUpdate = Date.now();
 const gameLoop = (loop, onComplete, time = 0) => {
@@ -34,10 +26,39 @@ export function runGameLoop(gameLoopPtr, onCompletePtr) {
   gameLoop(getFunction(gameLoopPtr), getFunction(onCompletePtr));
 }
 
+function toggleMaximized() {
+  state.win.classList.toggle('maximized');
+  if (state.win.classList.contains('maximized')) {
+    state.canvas.width = window.innerWidth;
+    state.canvas.height = window.innerHeight - 28;
+  } else {
+    state.canvas.width = state.width;
+    state.canvas.height = state.height;
+  }
+}
+
 export function createWindow(ptr, width, height) {
+  state.width = width;
+  state.height = height;
   document.title = getString(ptr);
+  const template = document.querySelector('#window-template');
+  state.win = template.content.cloneNode(true).firstElementChild;
+  state.win.querySelector('.window-title').textContent = getString(ptr);
+  state.win.style.width = `${width}px`;
+  state.win.style.height = `${height + 28}px`;
+  state.canvas = state.win.querySelector('canvas');
   state.canvas.width = width;
   state.canvas.height = height;
+  state.ctx = state.canvas.getContext('2d');
+  document.body.appendChild(state.win);
+  state.win.querySelector('.traffic-light.close').addEventListener('click', () => {
+    state.running = false;
+  });
+  state.win.querySelector('.traffic-light.minimize').addEventListener('click', () => {
+    console.log('minimize');
+  });
+  state.win.querySelector('.traffic-light.maximize').addEventListener('click', toggleMaximized);
+  state.win.querySelector('.window-titlebar').addEventListener('dblclick', toggleMaximized);
 }
 
 export function setDrawColor(r, g, b, a) {
@@ -49,24 +70,10 @@ export function clearScreen() {
   state.ctx.fillRect(0, 0, state.canvas.width, state.canvas.height);
 }
 
-export function drawRect(x, y, width, height) {
-  state.ctx.strokeRect(x, y, width, height);
-}
-
-export function fillRect(x, y, width, height) {
-  state.ctx.fillRect(x, y, width, height);
-}
-
 export function drawCircle(x, y, radius) {
   state.ctx.beginPath();
   state.ctx.arc(x, y, radius, 0, 2 * Math.PI);
   state.ctx.stroke();
-}
-
-export function fillCircle(x, y, radius) {
-  state.ctx.beginPath();
-  state.ctx.arc(x, y, radius, 0, 2 * Math.PI);
-  state.ctx.fill();
 }
 
 export function drawLine(x1, y1, x2, y2) {
@@ -77,7 +84,8 @@ export function drawLine(x1, y1, x2, y2) {
 }
 
 export function destroyWindow() {
-  state.canvas.remove();
+  console.log('destroyWindow');
+  state.win.remove();
 }
 
 export function quit() {
@@ -85,7 +93,7 @@ export function quit() {
 }
 
 export function setOnMouseMove(onMouseMovePtr) {
-  window.addEventListener('mousemove', e => {
+  state.canvas.addEventListener('mousemove', e => {
     let rect = state.canvas.getBoundingClientRect();
     let x = e.clientX - rect.left;
     let y = e.clientY - rect.top;
