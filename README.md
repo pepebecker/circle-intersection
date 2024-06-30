@@ -1,19 +1,31 @@
-# [Circle Intersection](http://pepebecker.com/circle-intersection/)
+# Circle Intersection
 
-The basics of inverse kinematics
+I created this project while learning about [inverse kinematics](https://en.wikipedia.org/wiki/Inverse_kinematics). Circle intersection is a fundamental concept in inverse kinematics.
 
-## Requires SDL2
+This project uses a custom rendering API that supports both a native SDL2 target and a WebAssembly target. This enables the same codebase to be used for both native and web platforms.
 
-```
-brew install sdl2
-```
+## Requirements
 
-## Usage
+- SDL2
+- SDL2_gfx
 
-```
+## Compile and Run Natively (using SDL2)
+
+To compile and run the project natively:
+
+```bash
 make
-make run
 ```
+
+## Compile to WebAssembly (using JS Canvas API)
+
+To compile the project to WebAssembly:
+
+```bash
+make wasm
+```
+
+After compiling, start a local server inside the `web` folder and open the page in your browser.
 
 ## Contributing
 

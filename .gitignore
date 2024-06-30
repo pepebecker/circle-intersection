@@ -1,2 +1,5 @@
 .DS_Store
-/bin
+.cache
+compile_commands.json
+bin
+web/app.wasm
