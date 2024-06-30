@@ -85,7 +85,7 @@ export function quit() {
 }
 
 export function setOnMouseMove(onMouseMovePtr) {
-  state.canvas.addEventListener('mousemove', e => {
+  window.addEventListener('mousemove', e => {
     let rect = state.canvas.getBoundingClientRect();
     let x = e.clientX - rect.left;
     let y = e.clientY - rect.top;
