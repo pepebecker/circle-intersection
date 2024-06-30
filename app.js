@@ -1,4 +1,5 @@
 import { getString, getFunction } from './index.js';
+import { win } from './win/index.js';
 
 const state = { running: false }
 
@@ -9,56 +10,42 @@ export function print(ptr) {
 export function init() { }
 
 let lastUpdate = Date.now();
-const gameLoop = (loop, onComplete, time = 0) => {
-  if (state.running) {
-    requestAnimationFrame(() => gameLoop(loop, onComplete, time));
-    let now = Date.now();
-    let dt = now - lastUpdate;
-    lastUpdate = now;
-    loop(dt);
-  } else {
-    onComplete();
-  }
+const gameLoop = (loop, time = 0) => {
+  if (!state.running) return;
+  requestAnimationFrame(() => gameLoop(loop, time));
+  let now = Date.now();
+  let dt = now - lastUpdate;
+  lastUpdate = now;
+  loop(dt);
 }
 
-export function runGameLoop(gameLoopPtr, onCompletePtr) {
+export function runGameLoop(gameLoopPtr, onQuitPtr) {
   state.running = true;
-  gameLoop(getFunction(gameLoopPtr), getFunction(onCompletePtr));
-}
-
-function toggleMaximized() {
-  state.win.classList.toggle('maximized');
-  if (state.win.classList.contains('maximized')) {
-    state.canvas.width = window.innerWidth;
-    state.canvas.height = window.innerHeight - 28;
-  } else {
-    state.canvas.width = state.width;
-    state.canvas.height = state.height;
-  }
+  state.onQuit = getFunction(onQuitPtr);
+  gameLoop(getFunction(gameLoopPtr));
 }
 
 export function createWindow(ptr, width, height) {
-  state.width = width;
-  state.height = height;
   document.title = getString(ptr);
-  const template = document.querySelector('#window-template');
-  state.win = template.content.cloneNode(true).firstElementChild;
-  state.win.querySelector('.window-title').textContent = getString(ptr);
-  state.win.style.width = `${width}px`;
-  state.win.style.height = `${height + 28}px`;
-  state.canvas = state.win.querySelector('canvas');
+
+  state.canvas = document.createElement('canvas');
   state.canvas.width = width;
   state.canvas.height = height;
   state.ctx = state.canvas.getContext('2d');
-  document.body.appendChild(state.win);
-  state.win.querySelector('.traffic-light.close').addEventListener('click', () => {
+
+  state.win = win.createWindow(getString(ptr), width, height);
+  state.win.element.appendChild(state.canvas);
+  state.win.onClose = () => {
     state.running = false;
-  });
-  state.win.querySelector('.traffic-light.minimize').addEventListener('click', () => {
+    state.onQuit();
+  };
+  state.win.onMinimize = () => {
     console.log('minimize');
-  });
-  state.win.querySelector('.traffic-light.maximize').addEventListener('click', toggleMaximized);
-  state.win.querySelector('.window-titlebar').addEventListener('dblclick', toggleMaximized);
+  };
+  state.win.onResize = (width, height) => {
+    state.canvas.width = width;
+    state.canvas.height = height;
+  };
 }
 
 export function setDrawColor(r, g, b, a) {
@@ -84,8 +71,7 @@ export function drawLine(x1, y1, x2, y2) {
 }
 
 export function destroyWindow() {
-  console.log('destroyWindow');
-  state.win.remove();
+  state.win.destroy();
 }
 
 export function quit() {
