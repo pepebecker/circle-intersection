@@ -27,12 +27,10 @@ export function runGameLoop(gameLoopPtr, onQuitPtr) {
 
 export function createWindow(ptr, width, height) {
   document.title = getString(ptr);
-
   state.canvas = document.createElement('canvas');
   state.canvas.width = width;
   state.canvas.height = height;
   state.ctx = state.canvas.getContext('2d');
-
   state.win = win.createWindow(getString(ptr), width, height);
   state.win.element.appendChild(state.canvas);
   state.win.onClose = () => {
@@ -72,10 +70,6 @@ export function drawLine(x1, y1, x2, y2) {
 
 export function destroyWindow() {
   state.win.destroy();
-}
-
-export function quit() {
-  state.running = false;
 }
 
 export function setOnMouseMove(onMouseMovePtr) {
