@@ -39,7 +39,15 @@ function createWindow(title, width, height) {
   element.querySelector('.traffic-light.minimize').addEventListener('click', () => ctx.onMinimize());
   element.querySelector('.traffic-light.maximize').addEventListener('click', onMaximize);
   element.querySelector('.window-titlebar').addEventListener('dblclick', onMaximize);
+  prefetchImage('./win/icon-close.svg');
+  prefetchImage('./win/icon-minimize.svg');
+  prefetchImage('./win/icon-maximize.svg');
   return ctx;
+}
+
+function prefetchImage(url) {
+  const img = new Image();
+  img.src = url;
 }
 
 export const win = { createWindow };
