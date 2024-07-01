@@ -2,7 +2,8 @@
   display: flex;
   flex-direction: column;
   border-radius: 10px;
-  box-shadow: 0 22px 70px 4px rgba(0, 0, 0, 0.56);
+  border: 0.5px solid #a6a6a6;
+  box-shadow: 0 22px 40px 1px rgba(0, 0, 1, 0.36);
   overflow: hidden;
   user-select: none;
   transition: all 0.3s ease-in-out;
@@ -16,13 +17,13 @@
 .window-titlebar {
   position: relative;
   background-color: #f1f0ee;
-  padding: 5px;
+  padding: 7px;
   display: flex;
   justify-content: center;
   align-items: center;
   color: #424241;
-  font-size: 14px;
-  font-weight: medium;
+  font-size: 13px;
+  font-weight: 700;
   border-bottom: 0.5px solid #d9d9d9;
 }
 .traffic-lights {
