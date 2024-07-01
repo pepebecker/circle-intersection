@@ -13,6 +13,7 @@
   width: 100vw !important;
   height: 100vh !important;
   border-radius: 0;
+  border: none;
 }
 .window-titlebar {
   position: relative;
